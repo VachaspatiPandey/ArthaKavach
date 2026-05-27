@@ -1,6 +1,6 @@
 import feedparser
 import requests
-import google.generativeai as genai
+from google import genai
 import os
 
 TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
@@ -13,9 +13,6 @@ feeds = [
     "https://feeds.bbci.co.uk/news/world/rss.xml",
 ]
 
-genai.configure(api_key=GEMINI_KEY)
-model = genai.GenerativeModel("gemini-1.5-flash")
-
 def get_news():
     headlines = []
     for url in feeds:
@@ -27,7 +24,7 @@ def get_news():
 def check_impact(headlines):
     text = "\n".join(headlines)
     prompt = f"""You are a financial analyst for Indian markets.
-These are recent news headlines. Check if ANY headline could significantly impact Nifty 50 right now.
+Check if ANY headline could significantly impact Nifty 50 right now.
 Consider: war, geopolitical crisis, sanctions, RBI/Fed surprise action, global market crash.
 Ignore: routine business news, minor updates.
 
@@ -38,7 +35,11 @@ Reply in this exact format only:
 IMPACT: YES or NO
 REASON: one line explanation
 HEADLINE: the specific headline (if YES)"""
-    response = model.generate_content(prompt)
+    client = genai.Client(api_key=GEMINI_KEY)
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=prompt
+    )
     return response.text
 
 def send_telegram(msg):
