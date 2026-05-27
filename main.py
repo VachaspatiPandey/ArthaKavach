@@ -113,11 +113,11 @@ HEADLINE: the specific headline (if YES)"""
 def main():
     now = get_ist_time()
 
-    if now.hour == 8 and now.minute >= 30:
+    if (now.hour == 8 and now.minute >= 30) or (now.hour == 9 and now.minute <= 15):
         send_greeting(now)
         return
 
-    if now.hour == 16 and now.minute >= 15:
+    if (now.hour == 16 and now.minute >= 15) or (now.hour == 17 and now.minute <= 0):
         send_closing_report(now)
         return
 
