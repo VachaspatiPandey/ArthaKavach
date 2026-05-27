@@ -2,7 +2,7 @@ name: ArthaKavach Sentinel
 
 on:
   schedule:
-    - cron: '15,30,45 3,4,5,6,7,8,9 * * 2'
+    - cron: '15,30,45 3,4,5,6,7,8,9 * * *'
   workflow_dispatch:
 
 jobs:
