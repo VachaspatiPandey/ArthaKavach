@@ -22,6 +22,7 @@ def get_news():
     return headlines[:25]
 
 def check_impact(headlines):
+    client = genai.Client(api_key=GEMINI_KEY)
     text = "\n".join(headlines)
     prompt = f"""You are a financial analyst for Indian markets.
 Check if ANY headline could significantly impact Nifty 50 right now.
@@ -35,9 +36,8 @@ Reply in this exact format only:
 IMPACT: YES or NO
 REASON: one line explanation
 HEADLINE: the specific headline (if YES)"""
-    client = genai.Client(api_key=GEMINI_KEY)
     response = client.models.generate_content(
-        model="gemini-1.5-flash",
+        model="gemini-2.5-flash",
         contents=prompt
     )
     return response.text
